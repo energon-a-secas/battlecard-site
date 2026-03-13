@@ -1,11 +1,12 @@
 const DEFAULT_STATE = {
   title: 'SALES BATTLECARD',
   columns: 3,
+  theme: 'dark',
   sections: [
     {
       id: 's1',
       title: 'Company Overview',
-      icon: 'building-2',
+      icon: 'business',
       accentColor: '#0063e5',
       colSpan: 2,
       rowSpan: 1,
@@ -20,7 +21,7 @@ const DEFAULT_STATE = {
     {
       id: 's2',
       title: 'Requirements',
-      icon: 'scroll-text',
+      icon: 'writing',
       accentColor: '#ef4444',
       colSpan: 1,
       rowSpan: 2,
@@ -31,7 +32,7 @@ const DEFAULT_STATE = {
     {
       id: 's3',
       title: 'Product',
-      icon: 'sword',
+      icon: 'technology',
       accentColor: '#6366f1',
       colSpan: 1,
       rowSpan: 1,
@@ -45,7 +46,7 @@ const DEFAULT_STATE = {
     {
       id: 's4',
       title: 'Strengths',
-      icon: 'shield',
+      icon: 'cybersecurity',
       accentColor: '#8b5cf6',
       colSpan: 1,
       rowSpan: 1,
@@ -56,7 +57,7 @@ const DEFAULT_STATE = {
     {
       id: 's5',
       title: 'FAQs / Answers',
-      icon: 'book-open',
+      icon: 'tech-stories',
       accentColor: '#475569',
       colSpan: 1,
       rowSpan: 2,
@@ -71,7 +72,7 @@ const DEFAULT_STATE = {
     {
       id: 's6',
       title: 'Pricing',
-      icon: 'coins',
+      icon: 'finance',
       accentColor: '#0284c7',
       colSpan: 1,
       rowSpan: 1,
@@ -86,7 +87,7 @@ const DEFAULT_STATE = {
     {
       id: 's7',
       title: 'Weaknesses',
-      icon: 'shield-off',
+      icon: 'startups',
       accentColor: '#dc2626',
       colSpan: 1,
       rowSpan: 1,
@@ -120,6 +121,7 @@ export function resetState() {
   const fresh = JSON.parse(JSON.stringify(DEFAULT_STATE));
   state.title = fresh.title;
   state.columns = fresh.columns;
+  state.theme = fresh.theme;
   state.sections = fresh.sections;
   saveState();
 }

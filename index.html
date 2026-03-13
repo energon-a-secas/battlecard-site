@@ -36,7 +36,6 @@
     "author": { "@type": "Organization", "name": "Neorgon", "url": "https://neorgon.com/" }
   }
   </script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 </head>
 <body>
@@ -71,16 +70,17 @@
         <div class="toolbar-left">
           <span class="toolbar-label">Columns</span>
           <button class="icon-btn" id="btnColsMinus" title="Fewer columns">
-            <i data-lucide="minus"></i>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
           <span class="cols-count" id="colsCount">3</span>
           <button class="icon-btn" id="btnColsPlus" title="More columns">
-            <i data-lucide="plus"></i>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
+        <div id="themePicker" class="theme-picker"></div>
         <div class="toolbar-right">
           <button class="add-section-btn" id="btnAddSection">
-            <i data-lucide="plus-circle"></i>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:15px;height:15px;display:block;pointer-events:none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Add Section
           </button>
         </div>
@@ -101,7 +101,7 @@
     <div class="modal">
       <div class="modal-header">
         <span class="modal-title">Icon &amp; Color</span>
-        <button class="modal-close" id="iconModalClose"><i data-lucide="x"></i></button>
+        <button class="modal-close" id="iconModalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="modal-body">
         <div class="modal-section-label">Icon</div>
@@ -118,7 +118,7 @@
     <div class="modal modal-sm">
       <div class="modal-header">
         <span class="modal-title">Section Layout</span>
-        <button class="modal-close" id="layoutModalClose"><i data-lucide="x"></i></button>
+        <button class="modal-close" id="layoutModalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="modal-body" id="layoutModalBody"></div>
     </div>

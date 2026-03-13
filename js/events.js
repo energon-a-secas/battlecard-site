@@ -1,6 +1,6 @@
 import { state, saveState, resetState, uid } from './state.js';
-import { renderAll, renderIconModal, renderLayoutModal } from './render.js';
-import { toast, refreshLucide } from './utils.js';
+import { renderAll, renderIconModal, renderLayoutModal, applyTheme, renderThemePicker } from './render.js';
+import { toast } from './utils.js';
 
 let _dragIdx = null;
 
@@ -105,6 +105,16 @@ export function bindEvents() {
     saveState();
     renderAll();
     renderIconModal(e.target.dataset.id);
+  });
+
+  // Theme picker
+  document.getElementById('themePicker').addEventListener('click', e => {
+    const btn = e.target.closest('[data-theme]');
+    if (!btn) return;
+    state.theme = btn.dataset.theme;
+    saveState();
+    applyTheme(state.theme);
+    renderThemePicker();
   });
 
   // Layout modal: radio selection
@@ -247,7 +257,7 @@ function addSection() {
   state.sections.push({
     id: uid(),
     title: 'New Section',
-    icon: 'star',
+    icon: 'technology',
     accentColor: '#0063e5',
     colSpan: 1,
     rowSpan: 1,
@@ -264,7 +274,6 @@ function openModal(id) {
   const el = document.getElementById(id);
   el.hidden = false;
   requestAnimationFrame(() => el.classList.add('open'));
-  refreshLucide();
 }
 
 function closeModal(id) {

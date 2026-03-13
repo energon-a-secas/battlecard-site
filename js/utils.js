@@ -17,13 +17,4 @@ export function escHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-export function refreshLucide() {
-  if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-  } else {
-    // Lucide deferred — retry once it loads
-    window.addEventListener('load', () => {
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }, { once: true });
-  }
-}
+

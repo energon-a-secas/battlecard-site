@@ -142,7 +142,7 @@ nav {
 }
 .icon-btn:hover { background: var(--surface-2); color: var(--text-primary); }
 .icon-btn:active { transform: scale(0.93); }
-.icon-btn i { width: 14px; height: 14px; display: block; }
+.icon-btn i, .icon-btn svg { width: 14px; height: 14px; display: block; }
 
 .add-section-btn {
   display: flex;
@@ -165,7 +165,7 @@ nav {
 
 /* ── Battlecard ─────────────────────────────────────────────── */
 .battlecard {
-  background: var(--card-bg);
+  background: var(--bc-card-bg, var(--card-bg));
   border: 1px solid rgba(255,255,255,.08);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -173,7 +173,7 @@ nav {
 }
 
 .card-title-bar {
-  background: linear-gradient(135deg, #1a053d 0%, #0d1528 60%, #050d1a 100%);
+  background: var(--bc-title-grad, linear-gradient(135deg, #1a053d 0%, #0d1528 60%, #050d1a 100%));
   border-bottom: 1px solid rgba(255,255,255,.1);
   padding: 18px 28px;
   text-align: center;
@@ -212,19 +212,19 @@ nav {
   grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
   grid-auto-flow: dense;
   gap: 1px;
-  background: rgba(255,255,255,.06);
+  background: var(--bc-gap, rgba(255,255,255,.06));
 }
 
 /* ── Section card ────────────────────────────────────────────── */
 .section-card {
-  background: var(--section-bg);
+  background: var(--bc-section-bg, var(--section-bg));
   padding: 12px 14px 14px;
   position: relative;
   min-height: 130px;
   transition: background var(--dur);
   overflow: visible;
 }
-.section-card:hover { background: var(--section-hover); }
+.section-card:hover { background: var(--bc-hover, var(--section-hover)); }
 .section-card.dragging { opacity: .4; }
 .section-card.drag-over { box-shadow: inset 0 0 0 2px var(--accent); }
 
@@ -524,7 +524,7 @@ nav {
   transition: background var(--dur), color var(--dur);
 }
 .modal-close:hover { background: var(--surface-2); color: var(--text-primary); }
-.modal-close i { width: 14px; height: 14px; display: block; }
+.modal-close i, .modal-close svg { width: 14px; height: 14px; display: block; }
 .modal-body { padding: 20px; }
 .modal-section-label {
   font-size: var(--text-xs);
@@ -597,6 +597,25 @@ nav {
 .layout-option input { display: none; }
 .layout-option-name { font-size: var(--text-sm); font-weight: 700; color: var(--text-primary); }
 .layout-option-desc { font-size: var(--text-xs); color: var(--text-muted); margin-left: auto; }
+
+/* ── Theme picker ────────────────────────────────────────────── */
+.theme-picker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.theme-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.15);
+  cursor: pointer;
+  transition: transform var(--dur), box-shadow var(--dur);
+  flex-shrink: 0;
+  padding: 0;
+}
+.theme-swatch:hover { transform: scale(1.25); }
+.theme-swatch.active { transform: scale(1.15); }
 
 /* ── Toast ───────────────────────────────────────────────────── */
 .toast {

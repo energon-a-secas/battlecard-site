@@ -1,11 +1,12 @@
 import { state } from './state.js';
-import { iconHtml, ICONS, ACCENT_COLORS } from './icons.js';
-import { escHtml, refreshLucide } from './utils.js';
+import { iconHtml, chromeIconHtml, ICONS, ACCENT_COLORS, THEMES } from './icons.js';
+import { escHtml } from './utils.js';
 
 export function renderAll() {
   renderTitle();
   renderGrid();
-  refreshLucide();
+  renderThemePicker();
+  applyTheme(state.theme || 'dark');
 }
 
 function renderTitle() {
@@ -37,10 +38,10 @@ function renderSection(sec, idx) {
     >
       <div class="section-controls">
         <button class="ctrl-btn" data-action="icon" data-id="${sec.id}" title="Icon &amp; Color">
-          ${iconHtml('palette', 13)}
+          ${chromeIconHtml('palette', 13)}
         </button>
         <button class="ctrl-btn" data-action="layout" data-id="${sec.id}" title="Layout type">
-          ${iconHtml('layout-grid', 13)}
+          ${chromeIconHtml('layout-grid', 13)}
         </button>
         <div class="ctrl-span-group" title="Column span">
           <button class="ctrl-span-btn" data-action="span" data-axis="col" data-dir="-1" data-id="${sec.id}">−</button>
@@ -54,13 +55,13 @@ function renderSection(sec, idx) {
         </div>
         <div class="ctrl-gap"></div>
         <button class="ctrl-btn ctrl-delete" data-action="delete" data-id="${sec.id}" title="Delete section">
-          ${iconHtml('trash-2', 13)}
+          ${chromeIconHtml('trash-2', 13)}
         </button>
       </div>
 
       <div class="section-header">
         <div class="section-icon-wrap" data-action="icon" data-id="${sec.id}" title="Change icon &amp; color">
-          ${iconHtml(sec.icon || 'star', 16)}
+          ${iconHtml(sec.icon || 'technology', 16)}
         </div>
         <div
           class="section-title"
@@ -95,8 +96,8 @@ function renderBody(sec) {
   }
 
   if (sec.layout === 'numbered') return intro + renderNumbered(sec);
-  if (sec.layout === 'columns') return intro + renderColumns(sec);
-  if (sec.layout === 'qa') return intro + renderQA(sec);
+  if (sec.layout === 'columns')  return intro + renderColumns(sec);
+  if (sec.layout === 'qa')       return intro + renderQA(sec);
   return intro;
 }
 
@@ -156,7 +157,7 @@ export function renderIconModal(sectionId) {
 
   iconGrid.innerHTML = ICONS.map(ic => `
     <button class="icon-option ${ic.name === sec.icon ? 'selected' : ''}" data-icon="${ic.name}" data-id="${sectionId}" title="${ic.label}">
-      <i data-lucide="${ic.name}" style="width:18px;height:18px;display:block;pointer-events:none;"></i>
+      ${iconHtml(ic.name, 20)}
     </button>
   `).join('');
 
@@ -166,7 +167,6 @@ export function renderIconModal(sectionId) {
 
   picker.value = sec.accentColor || '#0063e5';
   picker.dataset.id = sectionId;
-  refreshLucide();
 }
 
 export function renderLayoutModal(sectionId) {
@@ -190,4 +190,31 @@ export function renderLayoutModal(sectionId) {
       </label>
     `).join('')}
   </div>`;
+}
+
+export function renderThemePicker() {
+  const el = document.getElementById('themePicker');
+  if (!el) return;
+  const active = state.theme || 'dark';
+  el.innerHTML = THEMES.map(t => `
+    <button class="theme-swatch ${t.id === active ? 'active' : ''}"
+      style="background:${t.swatch};${t.id === active ? `box-shadow:0 0 0 2px ${t.swatchRing}` : ''}"
+      data-theme="${t.id}"
+      title="${t.label}"></button>
+  `).join('');
+}
+
+export function applyTheme(themeId) {
+  const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
+  const bc = document.getElementById('battlecard');
+  if (!bc) return;
+  bc.style.setProperty('--bc-card-bg',    theme.card);
+  bc.style.setProperty('--bc-section-bg', theme.section);
+  bc.style.setProperty('--bc-hover',      theme.hover);
+  bc.style.setProperty('--bc-gap',        theme.gap);
+  bc.style.setProperty('--bc-title-grad', theme.titleGrad);
+  // Override text vars so all child elements inherit the right palette
+  bc.style.setProperty('--text-primary',   theme.textPrimary);
+  bc.style.setProperty('--text-secondary', theme.textSecondary);
+  bc.style.setProperty('--text-muted',     theme.textMuted);
 }

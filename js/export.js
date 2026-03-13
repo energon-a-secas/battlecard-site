@@ -44,7 +44,6 @@ export async function exportView() {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Battle Card</title>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"><\/script>
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 body { background:#0c1219; font-family:'Avenir Next',system-ui,sans-serif; display:flex; align-items:flex-start; justify-content:center; padding:40px 20px; min-height:100vh; }
@@ -57,7 +56,6 @@ ${css}
 ${cardHtml}
 <script>
 document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-if (typeof lucide !== 'undefined') lucide.createIcons();
 <\/script>
 </body>
 </html>`;
