@@ -228,25 +228,25 @@ nav {
 .section-card.dragging { opacity: .4; }
 .section-card.drag-over { box-shadow: inset 0 0 0 2px var(--accent); }
 
-/* ── Controls bar (appears on hover) ───────────────────────── */
+/* ── Controls bar (appears on hover, in-flow — never overlaps content) ─ */
 .section-controls {
-  position: absolute;
-  top: 0; left: 0; right: 0;
   display: flex;
   align-items: center;
   gap: 3px;
-  padding: 4px 6px;
+  padding: 0 6px;
   background: rgba(8,12,22,.92);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(255,255,255,.08);
+  max-height: 0;
+  overflow: hidden;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-fast);
-  z-index: 10;
+  transition: max-height 0.15s ease, opacity 0.12s ease, padding 0.15s ease;
+  margin: -12px -14px 8px;  /* pull to card edges, gap below */
 }
 .section-card:hover .section-controls {
+  max-height: 36px;
   opacity: 1;
-  pointer-events: auto;
+  padding: 4px 6px;
 }
 .ctrl-btn {
   display: flex; align-items: center; justify-content: center;
@@ -484,9 +484,13 @@ nav {
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s;
 }
-.modal-overlay.open { opacity: 1; }
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
 .modal {
   background: #0d1526;
   border: 1px solid rgba(255,255,255,.12);
