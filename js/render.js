@@ -37,24 +37,24 @@ function renderSection(sec, idx) {
       style="--accent:${accent};grid-column:span ${colSpan};grid-row:span ${rowSpan};border-top:3px solid ${accent};"
     >
       <div class="section-controls">
-        <button class="ctrl-btn" data-action="icon" data-id="${sec.id}" title="Icon &amp; Color">
+        <button class="ctrl-btn" data-action="icon" data-id="${sec.id}" title="Icon &amp; Color" aria-label="Change icon and color">
           ${chromeIconHtml('palette', 13)}
         </button>
-        <button class="ctrl-btn" data-action="layout" data-id="${sec.id}" title="Layout type">
+        <button class="ctrl-btn" data-action="layout" data-id="${sec.id}" title="Layout type" aria-label="Change layout type">
           ${chromeIconHtml('layout-grid', 13)}
         </button>
         <div class="ctrl-span-group" title="Column span">
-          <button class="ctrl-span-btn" data-action="span" data-axis="col" data-dir="-1" data-id="${sec.id}">−</button>
+          <button class="ctrl-span-btn" data-action="span" data-axis="col" data-dir="-1" data-id="${sec.id}" aria-label="Decrease column span">−</button>
           <span class="ctrl-span-label">${colSpan}c</span>
-          <button class="ctrl-span-btn" data-action="span" data-axis="col" data-dir="1" data-id="${sec.id}">+</button>
+          <button class="ctrl-span-btn" data-action="span" data-axis="col" data-dir="1" data-id="${sec.id}" aria-label="Increase column span">+</button>
         </div>
         <div class="ctrl-span-group" title="Row span">
-          <button class="ctrl-span-btn" data-action="span" data-axis="row" data-dir="-1" data-id="${sec.id}">−</button>
+          <button class="ctrl-span-btn" data-action="span" data-axis="row" data-dir="-1" data-id="${sec.id}" aria-label="Decrease row span">−</button>
           <span class="ctrl-span-label">${rowSpan}r</span>
-          <button class="ctrl-span-btn" data-action="span" data-axis="row" data-dir="1" data-id="${sec.id}">+</button>
+          <button class="ctrl-span-btn" data-action="span" data-axis="row" data-dir="1" data-id="${sec.id}" aria-label="Increase row span">+</button>
         </div>
         <div class="ctrl-gap"></div>
-        <button class="ctrl-btn ctrl-delete" data-action="delete" data-id="${sec.id}" title="Delete section">
+        <button class="ctrl-btn ctrl-delete" data-action="delete" data-id="${sec.id}" title="Delete section" aria-label="Delete section">
           ${chromeIconHtml('trash-2', 13)}
         </button>
       </div>
@@ -109,10 +109,10 @@ function renderNumbered(sec) {
           <span contenteditable="true" spellcheck="false" data-field="sub-title" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.title)}</span>
         </div>
         <div class="sub-num-text" contenteditable="true" spellcheck="false" data-field="sub-content" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.content)}</div>
-        <button class="sub-remove-btn" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove">×</button>
+        <button class="sub-remove-btn" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove" aria-label="Remove item">×</button>
       </div>
     `).join('')}
-    <button class="sub-add-btn" data-action="add-sub" data-id="${sec.id}">+</button>
+    <button class="sub-add-btn" data-action="add-sub" data-id="${sec.id}" aria-label="Add item">+</button>
   </div>`;
 }
 
@@ -122,10 +122,10 @@ function renderColumns(sec) {
       <div class="sub-col-item">
         <div class="sub-col-title" contenteditable="true" spellcheck="false" data-field="sub-title" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.title)}</div>
         <div class="sub-col-text" contenteditable="true" spellcheck="false" data-field="sub-content" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.content)}</div>
-        <button class="sub-remove-btn" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove">×</button>
+        <button class="sub-remove-btn" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove" aria-label="Remove item">×</button>
       </div>
     `).join('')}
-    <button class="sub-add-btn" data-action="add-sub" data-id="${sec.id}">+</button>
+    <button class="sub-add-btn" data-action="add-sub" data-id="${sec.id}" aria-label="Add item">+</button>
   </div>`;
 }
 
@@ -136,7 +136,7 @@ function renderQA(sec) {
         <div class="qa-row qa-q-row">
           <span class="qa-label" style="color:var(--accent)">Q</span>
           <div class="qa-text" contenteditable="true" spellcheck="false" data-field="sub-title" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.title)}</div>
-          <button class="sub-remove-btn qa-remove" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove">×</button>
+          <button class="sub-remove-btn qa-remove" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove" aria-label="Remove Q&amp;A">×</button>
         </div>
         <div class="qa-row qa-a-row">
           <span class="qa-label qa-a-label">A</span>

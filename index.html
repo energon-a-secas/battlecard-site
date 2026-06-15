@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BriefCard — Battle Card Builder</title>
+  <title>BriefCard: Battle Card Builder</title>
   <meta name="description" content="Build customizable sales battle cards with resizable sections, game icons, and color accents. No signup needed, exports to PNG.">
-  <meta property="og:title" content="BriefCard — Battle Card Builder">
+  <meta property="og:title" content="BriefCard: Battle Card Builder">
   <meta property="og:description" content="Build and export battle cards with custom sections, icons, and colors.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://briefcard.neorgon.com/">
   <meta property="og:site_name" content="Neorgon">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BriefCard — Battle Card Builder">
+  <meta name="twitter:title" content="BriefCard: Battle Card Builder">
   <meta name="twitter:description" content="Build and export battle cards with custom sections, icons, and colors.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://briefcard.neorgon.com/">
@@ -69,11 +69,11 @@
       <div class="toolbar">
         <div class="toolbar-left">
           <span class="toolbar-label">Columns</span>
-          <button class="icon-btn" id="btnColsMinus" title="Fewer columns">
+          <button class="icon-btn" id="btnColsMinus" title="Fewer columns" aria-label="Fewer columns">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
           <span class="cols-count" id="colsCount">3</span>
-          <button class="icon-btn" id="btnColsPlus" title="More columns">
+          <button class="icon-btn" id="btnColsPlus" title="More columns" aria-label="More columns">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
@@ -101,7 +101,7 @@
     <div class="modal">
       <div class="modal-header">
         <span class="modal-title">Icon &amp; Color</span>
-        <button class="modal-close" id="iconModalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <button class="modal-close" id="iconModalClose" aria-label="Close dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="modal-body">
         <div class="modal-section-label">Icon</div>
@@ -118,7 +118,7 @@
     <div class="modal modal-sm">
       <div class="modal-header">
         <span class="modal-title">Section Layout</span>
-        <button class="modal-close" id="layoutModalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <button class="modal-close" id="layoutModalClose" aria-label="Close dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;display:block;pointer-events:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
       <div class="modal-body" id="layoutModalBody"></div>
     </div>

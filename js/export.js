@@ -22,7 +22,7 @@ export async function exportPNG() {
     link.click();
     toast('PNG downloaded');
   } catch (err) {
-    toast('Export failed — check console');
+    toast('Export failed, check console');
     console.error(err);
   } finally {
     controls.forEach(el => { el.style.visibility = ''; });
@@ -65,6 +65,6 @@ document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute(
     win.document.close();
     toast('Opened in new tab');
   } else {
-    toast('Popup blocked — allow popups for this site');
+    toast('Popup blocked, allow popups for this site');
   }
 }
