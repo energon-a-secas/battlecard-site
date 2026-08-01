@@ -9,6 +9,12 @@ export function renderAll() {
   applyTheme(state.theme || 'dark');
 }
 
+const BRAND_FONTS = {
+  sans:  "inherit",
+  serif: "Georgia, 'Times New Roman', serif",
+  mono:  "'SF Mono', 'Fira Code', 'Courier New', monospace",
+};
+
 function renderTitle() {
   const el = document.getElementById('cardTitle');
   if (el && el !== document.activeElement) {
@@ -16,6 +22,21 @@ function renderTitle() {
   }
   const counter = document.getElementById('colsCount');
   if (counter) counter.textContent = state.columns;
+  renderBrand();
+}
+
+function renderBrand() {
+  const wrap = document.getElementById('cardBrand');
+  const bc = document.getElementById('battlecard');
+  if (!wrap || !bc) return;
+  const b = state.brand || {};
+  const hasBrand = b.company || b.logoDataUrl;
+  wrap.hidden = !hasBrand;
+  wrap.innerHTML = hasBrand
+    ? `${b.logoDataUrl ? `<img class="card-brand-logo" src="${b.logoDataUrl}" alt="">` : ''}` +
+      `${b.company ? `<span class="card-brand-name">${escHtml(b.company)}</span>` : ''}`
+    : '';
+  bc.style.setProperty('--bc-font', BRAND_FONTS[b.font] || 'inherit');
 }
 
 function renderGrid() {
@@ -54,6 +75,9 @@ function renderSection(sec, idx) {
           <button class="ctrl-span-btn" data-action="span" data-axis="row" data-dir="1" data-id="${sec.id}" aria-label="Increase row span">+</button>
         </div>
         <div class="ctrl-gap"></div>
+        <button class="ctrl-btn" data-action="duplicate" data-id="${sec.id}" title="Duplicate section" aria-label="Duplicate section">
+          ${chromeIconHtml('copy', 13)}
+        </button>
         <button class="ctrl-btn ctrl-delete" data-action="delete" data-id="${sec.id}" title="Delete section" aria-label="Delete section">
           ${chromeIconHtml('trash-2', 13)}
         </button>
@@ -98,6 +122,7 @@ function renderBody(sec) {
   if (sec.layout === 'numbered') return intro + renderNumbered(sec);
   if (sec.layout === 'columns')  return intro + renderColumns(sec);
   if (sec.layout === 'qa')       return intro + renderQA(sec);
+  if (sec.layout === 'pairs')    return intro + renderPairs(sec);
   return intro;
 }
 
@@ -148,6 +173,26 @@ function renderQA(sec) {
   </div>`;
 }
 
+function renderPairs(sec) {
+  return `<div class="sub-pairs">
+    ${sec.subsections.map((sub, i) => `
+      <div class="pair-item">
+        <div class="pair-objection">
+          <div class="pair-tag">They say</div>
+          <div class="pair-text" contenteditable="true" spellcheck="false" data-field="sub-title" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.title)}</div>
+          <button class="sub-remove-btn pair-remove" data-action="remove-sub" data-id="${sec.id}" data-sub="${i}" title="Remove" aria-label="Remove pair">×</button>
+        </div>
+        <div class="pair-arrow" style="color:var(--accent)" aria-hidden="true">→</div>
+        <div class="pair-response">
+          <div class="pair-tag" style="color:var(--accent)">You say</div>
+          <div class="pair-text" contenteditable="true" spellcheck="false" data-field="sub-content" data-id="${sec.id}" data-sub="${i}">${escHtml(sub.content)}</div>
+        </div>
+      </div>
+    `).join('')}
+    <button class="sub-add-btn" data-action="add-sub" data-id="${sec.id}">+ Add objection</button>
+  </div>`;
+}
+
 export function renderIconModal(sectionId) {
   const sec = state.sections.find(s => s.id === sectionId);
   const iconGrid = document.getElementById('iconGrid');
@@ -179,6 +224,7 @@ export function renderLayoutModal(sectionId) {
     { value: 'numbered', label: 'Numbered',   desc: 'Items with number labels (01, 02, 03...)' },
     { value: 'columns',  label: 'Columns',    desc: 'Titled column grid (ONE, TWO, THREE...)' },
     { value: 'qa',       label: 'Q & A',      desc: 'Question and answer pairs' },
+    { value: 'pairs',    label: 'Objection → Response', desc: 'What they say vs. what you say back' },
   ];
 
   body.innerHTML = `<div class="layout-options">

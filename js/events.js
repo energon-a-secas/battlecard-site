@@ -1,5 +1,6 @@
-import { state, saveState, resetState, uid } from './state.js';
+import { state, saveState, resetState, replaceState, normalizeCard, uid } from './state.js';
 import { renderAll, renderIconModal, renderLayoutModal, applyTheme, renderThemePicker } from './render.js';
+import { TEMPLATES } from './templates.js';
 import { toast } from './utils.js';
 
 let _dragIdx = null;
@@ -25,12 +26,105 @@ export function bindEvents() {
   // Add section
   document.getElementById('btnAddSection').addEventListener('click', addSection);
 
-  // Export buttons (lazy-load export module)
-  document.getElementById('btnExportPng').addEventListener('click', () => {
-    import('./export.js').then(m => m.exportPNG());
+  // Templates modal
+  document.getElementById('btnTemplates').addEventListener('click', () => {
+    renderTemplatesModal();
+    openModal('templatesModal');
   });
-  document.getElementById('btnExportView').addEventListener('click', () => {
-    import('./export.js').then(m => m.exportView());
+  document.getElementById('templatesModalClose').addEventListener('click', () => closeModal('templatesModal'));
+  document.getElementById('templatesList').addEventListener('click', e => {
+    const btn = e.target.closest('[data-template]');
+    if (!btn) return;
+    const tpl = TEMPLATES.find(t => t.id === btn.dataset.template);
+    if (!tpl) return;
+    if (!confirm(`Load "${tpl.name}"? Your current card will be replaced.`)) return;
+    const card = normalizeCard(JSON.parse(JSON.stringify(tpl.card)));
+    card.theme = state.theme;
+    replaceState(card);
+    renderAll();
+    closeModal('templatesModal');
+    toast(`Loaded: ${tpl.name}`);
+  });
+
+  // Export dropdown (kit .header-menu styling, site-owned behavior)
+  const exportToggle = document.getElementById('btnExportMenu');
+  const exportMenu = document.getElementById('exportMenu');
+  exportToggle.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = !exportMenu.classList.contains('open');
+    exportMenu.classList.toggle('open', open);
+    exportToggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', e => {
+    if (!exportMenu.contains(e.target) && e.target !== exportToggle) {
+      exportMenu.classList.remove('open');
+      exportToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && exportMenu.classList.contains('open')) {
+      exportMenu.classList.remove('open');
+      exportToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  exportMenu.addEventListener('click', e => {
+    const item = e.target.closest('[data-export]');
+    if (!item) return;
+    exportMenu.classList.remove('open');
+    exportToggle.setAttribute('aria-expanded', 'false');
+    import('./export.js').then(m => {
+      if (item.dataset.export === 'png')   m.exportPNG();
+      if (item.dataset.export === 'view')  m.exportView();
+      if (item.dataset.export === 'json')  m.exportJSON();
+      if (item.dataset.export === 'share') m.copyShareLink();
+    });
+  });
+
+  // Import JSON
+  const importFile = document.getElementById('importFile');
+  document.getElementById('btnImportJson').addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', () => {
+    const file = importFile.files[0];
+    if (file) import('./export.js').then(m => m.importJSONFile(file));
+    importFile.value = '';
+  });
+
+  // Brand modal
+  document.getElementById('btnBrand').addEventListener('click', () => {
+    syncBrandModal();
+    openModal('brandModal');
+  });
+  document.getElementById('brandModalClose').addEventListener('click', () => closeModal('brandModal'));
+  document.getElementById('brandCompany').addEventListener('input', e => {
+    state.brand.company = e.target.value.slice(0, 60);
+    saveState();
+    renderAll();
+  });
+  document.getElementById('brandFont').addEventListener('change', e => {
+    state.brand.font = e.target.value;
+    saveState();
+    renderAll();
+  });
+  document.getElementById('brandLogo').addEventListener('change', e => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (file.size > 512 * 1024) { toast('Logo too large (max 500 KB)'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.brand.logoDataUrl = reader.result;
+      saveState();
+      renderAll();
+      syncBrandModal();
+      toast('Logo added');
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('brandLogoRemove').addEventListener('click', () => {
+    state.brand.logoDataUrl = '';
+    saveState();
+    renderAll();
+    syncBrandModal();
   });
 
   // Reset
@@ -161,6 +255,18 @@ function onGridClick(e) {
     return;
   }
 
+  if (action === 'duplicate') {
+    const idx = state.sections.findIndex(s => s.id === id);
+    if (idx === -1) return;
+    const clone = JSON.parse(JSON.stringify(state.sections[idx]));
+    clone.id = uid();
+    state.sections.splice(idx + 1, 0, clone);
+    saveState();
+    renderAll();
+    toast('Section duplicated');
+    return;
+  }
+
   if (action === 'delete') {
     if (state.sections.length <= 1) { toast('Need at least one section'); return; }
     if (confirm('Delete this section?')) {
@@ -179,9 +285,11 @@ function onGridClick(e) {
     const titles = {
       numbered: String(n + 1).padStart(2, '0'),
       columns: numLabels[Math.min(n, 5)],
-      qa: 'New question?'
+      qa: 'New question?',
+      pairs: 'New objection'
     };
-    sec.subsections.push({ title: titles[sec.layout] || String(n + 1), content: 'Content here' });
+    const contents = { pairs: 'Your response' };
+    sec.subsections.push({ title: titles[sec.layout] || String(n + 1), content: contents[sec.layout] || 'Content here' });
     saveState();
     renderAll();
     return;
@@ -280,4 +388,29 @@ function closeModal(id) {
   const el = document.getElementById(id);
   el.classList.remove('open');
   setTimeout(() => { el.hidden = true; }, 220);
+}
+
+function renderTemplatesModal() {
+  const list = document.getElementById('templatesList');
+  list.innerHTML = TEMPLATES.map(t => `
+    <button type="button" class="template-option" data-template="${t.id}">
+      <span class="template-name">${t.name}</span>
+      <span class="template-desc">${t.desc}</span>
+      <span class="template-meta">${t.card.sections.length} sections</span>
+    </button>`).join('');
+}
+
+function syncBrandModal() {
+  document.getElementById('brandCompany').value = state.brand.company || '';
+  document.getElementById('brandFont').value = state.brand.font || 'sans';
+  const preview = document.getElementById('brandLogoPreview');
+  const removeBtn = document.getElementById('brandLogoRemove');
+  if (state.brand.logoDataUrl) {
+    preview.src = state.brand.logoDataUrl;
+    preview.hidden = false;
+    removeBtn.hidden = false;
+  } else {
+    preview.hidden = true;
+    removeBtn.hidden = true;
+  }
 }

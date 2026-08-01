@@ -1,4 +1,46 @@
 import { toast } from './utils.js';
+import { state, normalizeCard, replaceState } from './state.js';
+import { renderAll, applyTheme } from './render.js';
+
+export function exportJSON() {
+  const payload = { app: 'battlecard', version: 1, ...JSON.parse(JSON.stringify(state)) };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const link = document.createElement('a');
+  link.download = 'battlecard.json';
+  link.href = URL.createObjectURL(blob);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  toast('JSON downloaded');
+}
+
+export function importJSONFile(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    let card = null;
+    try { card = normalizeCard(JSON.parse(reader.result)); } catch (_) {}
+    if (!card) { toast('Not a valid battlecard JSON'); return; }
+    replaceState(card);
+    renderAll();
+    applyTheme(state.theme);
+    toast('Card imported');
+  };
+  reader.onerror = () => toast('Could not read file');
+  reader.readAsText(file);
+}
+
+export async function copyShareLink() {
+  // The logo data URL can be hundreds of KB — links carry everything but it.
+  const card = JSON.parse(JSON.stringify(state));
+  if (card.brand) card.brand.logoDataUrl = '';
+  const encoded = btoa(encodeURIComponent(JSON.stringify(card)));
+  const url = `${location.origin}${location.pathname}#c=${encoded}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    toast(state.brand?.logoDataUrl ? 'Link copied (logo not included)' : 'Share link copied');
+  } catch (_) {
+    prompt('Copy this link:', url);
+  }
+}
 
 export async function exportPNG() {
   const card = document.getElementById('battlecard');

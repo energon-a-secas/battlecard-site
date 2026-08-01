@@ -1,7 +1,10 @@
+const DEFAULT_BRAND = { company: '', logoDataUrl: '', font: 'sans' };
+
 const DEFAULT_STATE = {
   title: 'SALES BATTLECARD',
   columns: 3,
   theme: 'dark',
+  brand: { ...DEFAULT_BRAND },
   sections: [
     {
       id: 's1',
@@ -101,10 +104,52 @@ const DEFAULT_STATE = {
   ]
 };
 
-function loadState() {
+/** Shape-check + fill gaps so imported/shared/old cards can't break render. */
+export function normalizeCard(raw) {
+  if (!raw || !Array.isArray(raw.sections) || raw.sections.length === 0) return null;
+  const card = {
+    title: typeof raw.title === 'string' ? raw.title : 'SALES BATTLECARD',
+    columns: Math.max(1, Math.min(6, parseInt(raw.columns, 10) || 3)),
+    theme: typeof raw.theme === 'string' ? raw.theme : 'dark',
+    brand: { ...DEFAULT_BRAND, ...(raw.brand || {}) },
+    sections: raw.sections.map((s, i) => ({
+      id: typeof s.id === 'string' ? s.id : 's' + i,
+      title: typeof s.title === 'string' ? s.title : 'Section',
+      icon: typeof s.icon === 'string' ? s.icon : 'technology',
+      accentColor: typeof s.accentColor === 'string' ? s.accentColor : '#0063e5',
+      colSpan: Math.max(1, Math.min(6, parseInt(s.colSpan, 10) || 1)),
+      rowSpan: Math.max(1, Math.min(4, parseInt(s.rowSpan, 10) || 1)),
+      content: typeof s.content === 'string' ? s.content : '',
+      layout: ['free', 'numbered', 'columns', 'qa', 'pairs'].includes(s.layout) ? s.layout : 'free',
+      subsections: Array.isArray(s.subsections)
+        ? s.subsections.map(sub => ({
+            title: typeof sub.title === 'string' ? sub.title : '',
+            content: typeof sub.content === 'string' ? sub.content : ''
+          }))
+        : []
+    }))
+  };
+  return card;
+}
+
+/** Card encoded in the URL hash (#c=…), shared decision-wheel-style. */
+function loadFromHash() {
+  const m = location.hash.match(/#c=([^&]+)/);
+  if (!m) return null;
   try {
-    const saved = localStorage.getItem('briefcard-v1');
-    if (saved) return JSON.parse(saved);
+    return normalizeCard(JSON.parse(decodeURIComponent(atob(m[1]))));
+  } catch (_) { return null; }
+}
+
+function loadState() {
+  const shared = loadFromHash();
+  if (shared) return shared;
+  try {
+    const saved = localStorage.getItem('battlecard-v1');
+    if (saved) {
+      const card = normalizeCard(JSON.parse(saved));
+      if (card) return card;
+    }
   } catch (_) {}
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
@@ -113,8 +158,18 @@ export const state = loadState();
 
 export function saveState() {
   try {
-    localStorage.setItem('briefcard-v1', JSON.stringify(state));
+    localStorage.setItem('battlecard-v1', JSON.stringify(state));
   } catch (_) {}
+}
+
+/** Replace the whole card in place (template load, JSON import, share link). */
+export function replaceState(card) {
+  state.title = card.title;
+  state.columns = card.columns;
+  if (card.theme) state.theme = card.theme;
+  state.brand = card.brand;
+  state.sections = card.sections;
+  saveState();
 }
 
 export function resetState() {
@@ -122,6 +177,7 @@ export function resetState() {
   state.title = fresh.title;
   state.columns = fresh.columns;
   state.theme = fresh.theme;
+  state.brand = fresh.brand;
   state.sections = fresh.sections;
   saveState();
 }

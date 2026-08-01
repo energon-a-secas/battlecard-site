@@ -1,8 +1,8 @@
 <div align="center">
 
-# BriefCard
+# BattleCard
 
-Build customizable sales battle cards with game icons, resizable sections, and PNG export.
+Build sales battle cards — short internal cheat sheets that help your sales team win deals.
 
 [![Live][badge-site]][url-site]
 [![HTML5][badge-html]][url-html]
@@ -18,7 +18,7 @@ Build customizable sales battle cards with game icons, resizable sections, and P
 [badge-claude]:  https://img.shields.io/badge/Claude_Code-CC785C?style=for-the-badge&logo=anthropic&logoColor=white
 [badge-license]: https://img.shields.io/badge/license-MIT-404040?style=for-the-badge
 
-[url-site]:   https://briefcard.neorgon.com/
+[url-site]:   https://battlecard.neorgon.com/
 [url-html]:   #
 [url-css]:    #
 [url-js]:     #
@@ -30,11 +30,22 @@ Build customizable sales battle cards with game icons, resizable sections, and P
 
 ## Overview
 
-BriefCard is a browser-based battle card builder for sales and product teams. Lay out sections, pick game-style icons, tune colors, and export a PNG without signing up.
+BattleCard is a browser-based sales battle card builder. A battle card is a short, internal cheat sheet a sales team uses to win deals: positioning, "why we win", objection handling, competitor landmines, and pricing on one page.
 
-**Live:** briefcard.neorgon.com
+Start from a template (including a full Neorgon demo card), lay out sections in five layouts (free text, numbered, columns, Q&A, objection → response), brand it with your logo, company name, and font, then export a PNG, download the card as JSON, re-import it later, or copy a share link that carries the whole card in the URL. No signup, nothing leaves the browser.
+
+**Live:** battlecard.neorgon.com
 
 ---
+
+## Features
+
+- **Templates** — Neorgon demo card, SaaS head-to-head example, and a blank starter
+- **Five section layouts** — free text, numbered, columns, Q&A, and objection → response pairs
+- **Brand & personalization** — logo upload, company name, and font choice per card
+- **Flexible grid** — add, duplicate, drag-reorder, resize (column/row span), 8 card themes
+- **Export & import** — PNG (2×), JSON download/upload, and share links that carry the card in the URL
+- **Private by default** — everything lives in the browser; no accounts, no backend
 
 ## Run locally
 

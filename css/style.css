@@ -663,3 +663,105 @@ button:active { transform: scale(0.97); transition-duration: var(--dur-fast); }
   color: rgba(255,255,255,.72);
   text-decoration: underline;
 }
+
+/* ── Export dropdown wrapper (menu styling comes from the header kit) ── */
+.bc-menu-wrap { position: relative; display: flex; }
+
+/* ── Brand bar on the card ─────────────────────────────────── */
+.battlecard { font-family: var(--bc-font, inherit); }
+.card-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px 0;
+}
+.card-brand-logo { height: 26px; width: auto; display: block; border-radius: 4px; }
+.card-brand-name {
+  font-size: .78em;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Objection → Response layout ───────────────────────────── */
+.sub-pairs { display: flex; flex-direction: column; gap: 8px; }
+.pair-item {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: start;
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--bc-hover, rgba(255,255,255,.04));
+}
+.pair-objection, .pair-response { min-width: 0; }
+.pair-tag {
+  font-size: .62em;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+.pair-text { font-size: .84em; line-height: 1.45; color: var(--text-secondary); outline: none; }
+.pair-text:focus { color: var(--text-primary); }
+.pair-arrow { align-self: center; font-weight: 700; }
+.pair-remove { position: absolute; top: 4px; right: 6px; }
+@media (max-width: 640px) {
+  .pair-item { grid-template-columns: 1fr; }
+  .pair-arrow { display: none; }
+}
+
+/* ── Templates modal ───────────────────────────────────────── */
+.templates-list { display: flex; flex-direction: column; gap: 10px; }
+.template-option {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  padding: 12px 14px;
+  border: 1px solid var(--border, rgba(255,255,255,.1));
+  border-radius: 10px;
+  background: rgba(255,255,255,.03);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color .15s, background .15s;
+}
+.template-option:hover { border-color: var(--accent, #0063e5); background: rgba(0,99,229,.08); }
+.template-name { font-weight: 600; font-size: .95em; }
+.template-desc { font-size: .8em; color: var(--text-secondary, #cacaca); }
+.template-meta { font-size: .7em; color: var(--text-muted, rgba(255,255,255,.5)); }
+
+/* ── Brand modal fields ────────────────────────────────────── */
+.brand-field { display: block; margin-bottom: 16px; }
+.brand-input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 12px;
+  border: 1px solid var(--border, rgba(255,255,255,.15));
+  border-radius: 8px;
+  background: rgba(255,255,255,.05);
+  color: inherit;
+  font: inherit;
+  font-size: .9em;
+}
+.brand-input:focus { outline: none; border-color: var(--accent, #0063e5); }
+select.brand-input option { background: #10142a; color: #fff; }
+.brand-logo-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.brand-logo-preview { height: 34px; width: auto; border-radius: 6px; background: rgba(255,255,255,.08); padding: 2px; }
+.brand-file-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border: 1px solid var(--border, rgba(255,255,255,.15));
+  border-radius: 8px;
+  background: rgba(255,255,255,.06);
+  font-size: .82em;
+  cursor: pointer;
+  color: inherit;
+}
+.brand-file-btn:hover { background: rgba(255,255,255,.12); }
+.brand-remove { border-color: rgba(248,113,113,.35); color: #f87171; }
