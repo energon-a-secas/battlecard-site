@@ -8,14 +8,14 @@ export const TEMPLATES = [
     name: 'Neorgon (demo)',
     desc: 'Full demo card: positioning, objection handling, competitors, pricing',
     card: {
-      title: 'NEORGON — SALES BATTLECARD',
+      title: 'NEORGON: SALES BATTLECARD',
       columns: 3,
       brand: { company: 'Neorgon', logoDataUrl: '', font: 'sans' },
       sections: [
         {
           id: 't1', title: 'Elevator Pitch', icon: 'business', accentColor: '#0063e5',
           colSpan: 2, rowSpan: 1, layout: 'free', subsections: [],
-          content: 'Neorgon is a suite of 40+ zero-setup web tools for engineering teams: planning canvases, interview scorecards, incident runbooks, and learning labs. No accounts, no installs, free forever — open a URL and work.'
+          content: 'Neorgon is a suite of 40+ zero-setup web tools for engineering teams: planning canvases, interview scorecards, incident runbooks, and learning labs. No accounts, no installs, free forever, open a URL and work.'
         },
         {
           id: 't2', title: 'Why We Win', icon: 'cybersecurity', accentColor: '#16a34a',
@@ -33,8 +33,8 @@ export const TEMPLATES = [
           colSpan: 2, rowSpan: 2, layout: 'pairs',
           content: '',
           subsections: [
-            { title: 'We already have Notion / Confluence for this', content: 'Those are documents. Neorgon tools are purpose-built interactive apps — a strategy canvas with gap detection beats a table template.' },
-            { title: 'Free tools mean no support or roadmap', content: 'Every tool is open source with public repos and a shared component kit — fixes land fleet-wide in one push.' },
+            { title: 'We already have Notion / Confluence for this', content: 'Those are documents. Neorgon tools are purpose-built interactive apps. A strategy canvas with gap detection beats a table template.' },
+            { title: 'Free tools mean no support or roadmap', content: 'Every tool is open source with public repos and a shared component kit, fixes land fleet-wide in one push.' },
             { title: 'Is our data safe?', content: 'Nothing leaves the browser unless you export it. No backend, no tracking of card content, no account to breach.' },
             { title: 'What about enterprise features?', content: 'Import/export gives you portability; the roadmap adds shareable links and team presets without ever requiring accounts.' }
           ]
@@ -45,7 +45,7 @@ export const TEMPLATES = [
           content: '',
           subsections: [
             { title: 'vs. Miro / FigJam?', content: 'They price per seat and gate exports. Pathfinder and Loadout are free and export to JSON, Markdown, and PNG.' },
-            { title: 'vs. spreadsheets?', content: 'Purpose-built UI beats generic grids — scoring, gap detection, and visual output come built in.' }
+            { title: 'vs. spreadsheets?', content: 'Purpose-built UI beats generic grids: scoring, gap detection, and visual output come built in.' }
           ]
         },
         {
@@ -83,14 +83,14 @@ export const TEMPLATES = [
         {
           id: 'a1', title: 'The One-Liner', icon: 'business', accentColor: '#0063e5',
           colSpan: 3, rowSpan: 1, layout: 'free', subsections: [],
-          content: 'Acme turns raw product events into decisions in minutes — self-serve dashboards your PMs actually build themselves, at half the cost of DataRival.'
+          content: 'Acme turns raw product events into decisions in minutes, self-serve dashboards your PMs actually build themselves, at half the cost of DataRival.'
         },
         {
           id: 'a2', title: 'Where We Win', icon: 'cybersecurity', accentColor: '#16a34a',
           colSpan: 1, rowSpan: 2, layout: 'numbered', content: '',
           subsections: [
             { title: '01', content: 'Setup in one afternoon vs. a 6-week implementation' },
-            { title: '02', content: 'Usage-based pricing — no seat minimums' },
+            { title: '02', content: 'Usage-based pricing: no seat minimums' },
             { title: '03', content: 'SQL escape hatch for the data team' }
           ]
         },
@@ -107,16 +107,16 @@ export const TEMPLATES = [
           colSpan: 1, rowSpan: 2, layout: 'pairs', content: '',
           subsections: [
             { title: 'DataRival is the safe choice', content: 'Safe for whom? Their per-seat model penalizes exactly the adoption you want.' },
-            { title: 'Migration sounds painful', content: 'Our importer replays your event history — median migration is 4 days, we staff it.' }
+            { title: 'Migration sounds painful', content: 'Our importer replays your event history: median migration is 4 days, we staff it.' }
           ]
         },
         {
           id: 'a5', title: 'Pricing Cheat Sheet', icon: 'finance', accentColor: '#0284c7',
           colSpan: 3, rowSpan: 1, layout: 'columns', content: '',
           subsections: [
-            { title: 'Starter', content: '$99/mo — 1M events' },
-            { title: 'Growth', content: '$499/mo — 20M events' },
-            { title: 'Scale', content: 'Custom — unlimited, SSO, DPA' }
+            { title: 'Starter', content: '$99/mo: 1M events' },
+            { title: 'Growth', content: '$499/mo: 20M events' },
+            { title: 'Scale', content: 'Custom: unlimited, SSO, DPA' }
           ]
         }
       ]

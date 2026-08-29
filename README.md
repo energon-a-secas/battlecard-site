@@ -2,7 +2,7 @@
 
 # BattleCard
 
-Build sales battle cards — short internal cheat sheets that help your sales team win deals.
+Build sales battle cards: short internal cheat sheets that help your sales team win deals.
 
 [![Live][badge-site]][url-site]
 [![HTML5][badge-html]][url-html]
@@ -40,12 +40,12 @@ Start from a template (including a full Neorgon demo card), lay out sections in 
 
 ## Features
 
-- **Templates** — Neorgon demo card, SaaS head-to-head example, and a blank starter
-- **Five section layouts** — free text, numbered, columns, Q&A, and objection → response pairs
-- **Brand & personalization** — logo upload, company name, and font choice per card
-- **Flexible grid** — add, duplicate, drag-reorder, resize (column/row span), 8 card themes
-- **Export & import** — PNG (2×), JSON download/upload, and share links that carry the card in the URL
-- **Private by default** — everything lives in the browser; no accounts, no backend
+- **Templates**: Neorgon demo card, SaaS head-to-head example, and a blank starter
+- **Five section layouts**: free text, numbered, columns, Q&A, and objection → response pairs
+- **Brand & personalization**: logo upload, company name, and font choice per card
+- **Flexible grid**: add, duplicate, drag-reorder, resize (column/row span), 8 card themes
+- **Export & import**: PNG (2×), JSON download/upload, and share links that carry the card in the URL
+- **Private by default**: everything lives in the browser; no accounts, no backend
 
 ## Run locally
 
