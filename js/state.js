@@ -107,8 +107,8 @@ const DEFAULT_STATE = {
 // A card reaches the page from a share link (#c=), an imported JSON file or
 // localStorage, and render.js writes these fields into HTML attributes. So
 // every field that lands in markup is checked against what the app itself
-// produces, never just typeof string: a crafted link once carried
-// `x" onerror="…` in logoDataUrl, accentColor and a section id.
+// produces, never just typeof string: a crafted link once closed the attribute
+// and added an error handler through logoDataUrl, accentColor and a section id.
 const LOGO_RE = /^data:image\/(?:png|jpeg|gif|webp|avif|svg\+xml);base64,[A-Za-z0-9+/]+={0,2}$/;
 const COLOR_RE = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 const ID_RE = /^[A-Za-z0-9_-]{1,40}$/;

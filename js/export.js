@@ -92,7 +92,11 @@ export async function exportView() {
     const resp = await fetch('./css/style.css');
     css = await resp.text();
   } catch (_) {}
-  const cardHtml = card.outerHTML;
+  // Strip editing from a copy here: the new tab inherits this page's CSP, which
+  // allows no inline script, so the tab cannot do it itself.
+  const copy = card.cloneNode(true);
+  copy.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+  const cardHtml = copy.outerHTML;
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,9 +113,6 @@ ${css}
 </head>
 <body>
 ${cardHtml}
-<script>
-document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-<\/script>
 </body>
 </html>`;
   const win = window.open('', '_blank');
