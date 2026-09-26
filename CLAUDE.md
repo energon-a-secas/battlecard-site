@@ -20,7 +20,7 @@ Then open http://localhost:8823. It must be served over HTTP. The app is ES modu
 | `js/render.js` | 267 | `renderAll`, `renderIconModal`, `renderLayoutModal`, `renderThemePicker`, `applyTheme` |
 | `js/state.js` | 188 | `normalizeCard`, `state`, `saveState`, `replaceState`, `resetState` |
 | `js/templates.js` | 141 | `TEMPLATES` |
-| `js/export.js` | 113 | `exportJSON`, `importJSONFile`, `copyShareLink`, `exportPNG`, `exportView` |
+| `js/export.js` | 125 | `exportJSON`, `importJSONFile`, `copyShareLink`, `exportPNG`, `exportView` |
 | `js/icons.js` | 96 | `THEMES`, `ICONS`, `ACCENT_COLORS`, `iconHtml`, `chromeIconHtml` |
 | `js/utils.js` | 21 | `toast`, `escHtml` |
 | `js/app.js` | 14 | none |
@@ -39,7 +39,8 @@ Vendored from `packages/neorgon-ui/`: never edit in place, run the sync script i
 
 ## Gotchas
 
-TODO: the non-obvious failures. What broke here before, what looks wrong but is deliberate, what a reasonable change would break. This is the highest-value section, leave it empty rather than filling it with generic advice.
+- **PNG export needs html2canvas-pro, not html2canvas.** `color-mix()` on `.section-icon-wrap` computes to `color(srgb ...)`, which html2canvas 1.4.1 cannot parse, so every export threw. The fork is pinned to an exact jsdelivr path with SRI, and `script-src` allows only that file: an upgrade changes the URL, the `integrity` hash and the CSP together.
+- **The `onclone` / `ignoreElements` options in `exportPNG` are load-bearing.** Without them the PNG is faded (the clone replays `fadeIn`), unstyled in Firefox (the cloned CSP meta resolves `'self'` against `about:blank`), and unstyled in WebKit with html2canvas-pro 2.x (the clone reports loaded before its stylesheets arrive). A check that only asserts "a PNG downloaded" passes all three; compare a pixel against the live render.
 
 ## Do not touch
 
