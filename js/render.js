@@ -33,10 +33,10 @@ function renderBrand() {
   const hasBrand = b.company || b.logoDataUrl;
   wrap.hidden = !hasBrand;
   wrap.innerHTML = hasBrand
-    ? `${b.logoDataUrl ? `<img class="card-brand-logo" src="${b.logoDataUrl}" alt="">` : ''}` +
+    ? `${b.logoDataUrl ? `<img class="card-brand-logo" src="${escHtml(b.logoDataUrl)}" alt="">` : ''}` +
       `${b.company ? `<span class="card-brand-name">${escHtml(b.company)}</span>` : ''}`
     : '';
-  bc.style.setProperty('--bc-font', BRAND_FONTS[b.font] || 'inherit');
+  bc.style.setProperty('--bc-font', Object.hasOwn(BRAND_FONTS, b.font) ? BRAND_FONTS[b.font] : 'inherit');
 }
 
 function renderGrid() {

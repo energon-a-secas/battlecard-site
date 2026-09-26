@@ -104,32 +104,52 @@ const DEFAULT_STATE = {
   ]
 };
 
+// A card reaches the page from a share link (#c=), an imported JSON file or
+// localStorage, and render.js writes these fields into HTML attributes. So
+// every field that lands in markup is checked against what the app itself
+// produces, never just typeof string: a crafted link once carried
+// `x" onerror="…` in logoDataUrl, accentColor and a section id.
+const LOGO_RE = /^data:image\/(?:png|jpeg|gif|webp|avif|svg\+xml);base64,[A-Za-z0-9+/]+={0,2}$/;
+const COLOR_RE = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+const ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+const FONTS = ['sans', 'serif', 'mono'];
+
+/** A logo is only ever a base64 image data URL (what FileReader gives us), or nothing. */
+export function safeLogo(v) {
+  return typeof v === 'string' && LOGO_RE.test(v) ? v : '';
+}
+
 /** Shape-check + fill gaps so imported/shared/old cards can't break render. */
 export function normalizeCard(raw) {
   if (!raw || !Array.isArray(raw.sections) || raw.sections.length === 0) return null;
+  const brand = raw.brand && typeof raw.brand === 'object' ? raw.brand : {};
   const card = {
     title: typeof raw.title === 'string' ? raw.title : 'SALES BATTLECARD',
     columns: Math.max(1, Math.min(6, parseInt(raw.columns, 10) || 3)),
     theme: typeof raw.theme === 'string' ? raw.theme : 'dark',
-    brand: { ...DEFAULT_BRAND, ...(raw.brand || {}) },
-    sections: raw.sections.map((s, i) => ({
-      id: typeof s.id === 'string' ? s.id : 's' + i,
+    brand: {
+      company: typeof brand.company === 'string' ? brand.company.slice(0, 60) : DEFAULT_BRAND.company,
+      logoDataUrl: safeLogo(brand.logoDataUrl),
+      font: FONTS.includes(brand.font) ? brand.font : DEFAULT_BRAND.font,
+    },
+    sections: raw.sections.filter(s => s && typeof s === 'object').map(s => ({
+      id: typeof s.id === 'string' && ID_RE.test(s.id) ? s.id : uid(),
       title: typeof s.title === 'string' ? s.title : 'Section',
       icon: typeof s.icon === 'string' ? s.icon : 'technology',
-      accentColor: typeof s.accentColor === 'string' ? s.accentColor : '#0063e5',
+      accentColor: typeof s.accentColor === 'string' && COLOR_RE.test(s.accentColor) ? s.accentColor : '#0063e5',
       colSpan: Math.max(1, Math.min(6, parseInt(s.colSpan, 10) || 1)),
       rowSpan: Math.max(1, Math.min(4, parseInt(s.rowSpan, 10) || 1)),
       content: typeof s.content === 'string' ? s.content : '',
       layout: ['free', 'numbered', 'columns', 'qa', 'pairs'].includes(s.layout) ? s.layout : 'free',
       subsections: Array.isArray(s.subsections)
         ? s.subsections.map(sub => ({
-            title: typeof sub.title === 'string' ? sub.title : '',
-            content: typeof sub.content === 'string' ? sub.content : ''
+            title: typeof sub?.title === 'string' ? sub.title : '',
+            content: typeof sub?.content === 'string' ? sub.content : ''
           }))
         : []
     }))
   };
-  return card;
+  return card.sections.length ? card : null;
 }
 
 /** Card encoded in the URL hash (#c=…), shared decision-wheel-style. */

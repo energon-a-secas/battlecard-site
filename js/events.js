@@ -1,4 +1,4 @@
-import { state, saveState, resetState, replaceState, normalizeCard, uid } from './state.js';
+import { state, saveState, resetState, replaceState, normalizeCard, uid, safeLogo } from './state.js';
 import { renderAll, renderIconModal, renderLayoutModal, applyTheme, renderThemePicker } from './render.js';
 import { TEMPLATES } from './templates.js';
 import { toast } from './utils.js';
@@ -112,7 +112,9 @@ export function bindEvents() {
     if (file.size > 512 * 1024) { toast('Logo too large (max 500 KB)'); return; }
     const reader = new FileReader();
     reader.onload = () => {
-      state.brand.logoDataUrl = reader.result;
+      const logo = safeLogo(reader.result);
+      if (!logo) { toast('Logo must be a PNG, JPG, GIF, WebP or SVG image'); return; }
+      state.brand.logoDataUrl = logo;
       saveState();
       renderAll();
       syncBrandModal();
@@ -186,7 +188,7 @@ export function bindEvents() {
     if (!sec) return;
     sec.accentColor = e.target.value;
     // Live update section styling without full re-render
-    const card = document.querySelector(`.section-card[data-id="${e.target.dataset.id}"]`);
+    const card = document.querySelector(`.section-card[data-id="${CSS.escape(e.target.dataset.id)}"]`);
     if (card) {
       card.style.setProperty('--accent', e.target.value);
       card.style.borderTopColor = e.target.value;
