@@ -56,7 +56,20 @@ export async function exportPNG() {
       backgroundColor: '#0c1219',
       scale: 2,
       useCORS: true,
-      logging: false
+      logging: false,
+      // Firefox resolves a cloned CSP meta's 'self' against about:blank and
+      // blocks every stylesheet. The clone still inherits this page's policy.
+      ignoreElements: el => el.matches('meta[http-equiv="Content-Security-Policy"]'),
+      onclone: async doc => {
+        // The clone replays each section's fadeIn from opacity 0.
+        doc.querySelectorAll('#battlecard .section-card').forEach(el => { el.style.animation = 'none'; });
+        // WebKit reports the clone loaded before its stylesheets arrive.
+        await Promise.all([...doc.querySelectorAll('link[rel~="stylesheet"]')].filter(l => !l.sheet).map(l => new Promise(done => {
+          l.addEventListener('load', done, { once: true });
+          l.addEventListener('error', done, { once: true });
+          setTimeout(done, 3000);
+        })));
+      }
     });
     const link = document.createElement('a');
     link.download = 'battlecard.png';
