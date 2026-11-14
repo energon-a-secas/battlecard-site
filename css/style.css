@@ -126,6 +126,16 @@ nav {
 .add-section-btn i { width: 15px; height: 15px; display: block; }
 
 /* ── Battlecard ─────────────────────────────────────────────── */
+/* The card keeps the columns its author chose. Where they do not fit (a phone,
+   or five and six columns on a laptop) it keeps its narrowest width and pans
+   inside this frame, so the page never scrolls sideways and no column is
+   clipped. The frame carries the card's shadow, which it would otherwise clip. */
+.card-scroll {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.04);
+}
+.card-scroll > .battlecard { width: min-content; min-width: 100%; box-shadow: none; }
 .battlecard {
   background: var(--bc-card-bg, var(--card-bg));
   border: 1px solid rgba(255,255,255,.08);
@@ -628,6 +638,10 @@ button:active { transform: scale(0.97); transition-duration: var(--dur-fast); }
 @media (max-width: 700px) {
   .workspace { padding: 16px 12px 32px; }
   .nav-link { padding: 5px 10px; font-size: 0.78rem; }
+  .toolbar { flex-wrap: wrap; row-gap: 10px; }
+}
+@media (pointer: coarse) {
+  .theme-swatch { width: 24px; height: 24px; }
 }
 
 /* ── Reduced motion ──────────────────────────────────────────── */
